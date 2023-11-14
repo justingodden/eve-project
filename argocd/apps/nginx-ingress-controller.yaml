@@ -8,9 +8,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/kubernetes/ingress-nginx.git
+    # repoURL: https://github.com/kubernetes/ingress-nginx.git
+    repoURL: https://github.com/justingodden/eve-project.git
     targetRevision: HEAD
-    path: deploy/static/provider/aws
+    # path: deploy/static/provider/aws
+    path: argocd/manifests/nginx-ingress-controller
   destination:
     server: "https://kubernetes.default.svc"
     namespace: ingress-nginx
