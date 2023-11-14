@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/kubernetes/ingress-nginx.git
     targetRevision: HEAD
-    path: deploy/static/provider/aws/deploy.yaml
+    path: deploy/static/provider/aws
   destination:
     server: "https://kubernetes.default.svc"
     namespace: ingress-nginx
