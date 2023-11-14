@@ -3,6 +3,8 @@ controller:
     default: true
   service:
     type: LoadBalancer
+    targetPorts:
+      https: 80
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-name: eve-project-nlb
       service.beta.kubernetes.io/aws-load-balancer-type: external
