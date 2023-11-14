@@ -24,6 +24,7 @@ spec:
     # path: argocd/manifests/nginx-ingress-controller
   destination:
     server: "https://kubernetes.default.svc"
+    namespace: kube-system
   syncPolicy:
     automated:
       selfHeal: true
