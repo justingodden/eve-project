@@ -1,0 +1,7 @@
+pinecone-client
+langchain
+openai
+tiktoken
+SQLAlchemy
+sqlalchemy_utils
+python-dotenv
