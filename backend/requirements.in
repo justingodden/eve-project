@@ -1,0 +1,8 @@
+langchain
+langserve
+chromadb
+fastapi
+openai
+tiktoken
+pypdf
+boto3
