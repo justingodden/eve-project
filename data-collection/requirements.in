@@ -1,0 +1,5 @@
+beautifulsoup4
+requests
+boto3
+sqlalchemy
+sqlalchemy_utils
