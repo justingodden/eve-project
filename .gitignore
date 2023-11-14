@@ -1,5 +1,8 @@
 venv
 .vscode
 __pycache__
-dev
+dev.ipynb
 .env
+*.db
+.terraform
+images
