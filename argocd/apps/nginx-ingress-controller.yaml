@@ -13,9 +13,6 @@ spec:
     targetRevision: "*"
     helm:
       releaseName: ingress-nginx
-      parameters:
-        - name: controller.service.type
-          value: NodePort
   destination:
     server: "https://kubernetes.default.svc"
     namespace: ingress-nginx
