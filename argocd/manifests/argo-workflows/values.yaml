@@ -11,13 +11,14 @@ workflow:
   serviceAccount:
     create: true
 
-# controller:
-#   workflowNamespaces:
-#     - default
-
-artifactRepository:
-  s3:
-    bucket: eve-project-2de413a419ed1b48-cc23cc37cdcf9132
-    keyFormat: "argo-artifacts/{{workflow.creationTimestamp.Y}}/{{workflow.creationTimestamp.m}}/{{workflow.creationTimestamp.d}}/{{workflow.name}}/{{pod.name}}"
-    useSDKCreds: false
-    insecure: false
+controller:
+  workflowNamespaces:
+    - default
+# artifactRepository:
+#   s3:
+#     endpoint: s3.amazonaws.com
+#     bucket: eve-project-2de413a419ed1b48-cc23cc37cdcf9132
+#     region: eu-west-1
+#     keyFormat: "argo-artifacts/{{workflow.creationTimestamp.Y}}/{{workflow.creationTimestamp.m}}/{{workflow.creationTimestamp.d}}/{{workflow.name}}/{{pod.name}}"
+#     # useSDKCreds: false
+#     # insecure: false
