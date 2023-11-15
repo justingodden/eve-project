@@ -1,6 +1,7 @@
 controller:
   ingressClassResource:
     default: true
+  allowSnippetAnnotations: true
   config:
     compute-full-forwarded-for: "true"
     use-forwarded-headers: "true"
