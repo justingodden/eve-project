@@ -6,5 +6,3 @@ st.set_page_config(
 )
 
 st.title("Eve 🚀")
-
-st.markdown("""[Summaries](/Summaries)""")
