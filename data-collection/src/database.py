@@ -12,8 +12,6 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.sql import functions
 from sqlalchemy_utils import database_exists, create_database
 
-from utils import get_db_uri
-
 
 class Base(DeclarativeBase):
     pass
