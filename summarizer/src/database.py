@@ -1,7 +1,9 @@
 from typing import Optional, List
 from datetime import datetime
+import json
 
-from sqlalchemy import create_engine
+import boto3
+from sqlalchemy import create_engine, inspect
 from sqlalchemy import Select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import DeclarativeBase
@@ -9,6 +11,8 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.sql import functions
 from sqlalchemy_utils import database_exists, create_database
+
+from utils import get_db_uri
 
 
 class Base(DeclarativeBase):
@@ -40,11 +44,15 @@ class Database:
         if local:
             self._engine = create_engine("sqlite:///./../sqlite3.db", echo=False)
         else:
-            raise NotImplementedError
+            self._engine = create_engine(get_db_uri(), echo=False)
 
         if not database_exists(self._engine.url):
             create_database(self._engine.url)
+
+        insp = inspect(self._engine)
+        if not insp.has_table(Article.__tablename__):
             Base.metadata.create_all(self._engine)
+
         self._session_maker = sessionmaker(bind=self._engine)
 
     def add_to_db(self, article: Article) -> None:
@@ -81,3 +89,13 @@ class Database:
             article.summary = summary
             session.commit()
             session.flush()
+
+
+def get_db_uri() -> dict:
+    session = boto3.Session()
+    client = session.client("secretsmanager", region_name="eu-west-1")
+    secret_string = client.get_secret_value(
+        SecretId="eve-project-a9562e1a1783b0e4"
+    ).get("SecretString")
+    secret = json.loads(secret_string)
+    return secret["db_uri"]

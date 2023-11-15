@@ -1,14 +1,15 @@
 from scraper import Scraper
 from cleaner import Cleaner
 from database import Database, Article
-from uploader import Uploader
+
+# from uploader import Uploader
 
 
 def main() -> None:
     scraper = Scraper()
     cleaner = Cleaner()
-    db = Database()
-    uploader = Uploader()
+    db = Database(local=False)
+    # uploader = Uploader()
 
     article_urls = scraper.get_urls()
 
@@ -30,8 +31,8 @@ def main() -> None:
                     scraped_article.image_url
                 )
 
-                image_data = scraper.get_image_data(scraped_article.image_url)
-                uploader.save_image(image_data, article.image_filename)
+                # image_data = scraper.get_image_data(scraped_article.image_url)
+                # uploader.save_image(image_data, article.image_filename)
 
                 db.add_to_db(article)
             print(f"{i+1}/{len(article_urls)} articles scraped...", end="\r")
