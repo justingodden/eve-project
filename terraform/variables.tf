@@ -15,3 +15,9 @@ variable "openai_api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "cohere_api_key" {
+  description = "Cohere API KEY"
+  type        = string
+  sensitive   = true
+}

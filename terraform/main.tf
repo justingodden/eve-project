@@ -260,6 +260,7 @@ module "secrets-manager" {
       db_uri         = "postgresql://${local.rds_login.username}:${local.rds_login.password}@${module.rds.address}:${local.rds_login.port}/${local.rds_login.db_name}"
       s3_bucket_uri  = "s3://${module.s3.bucket_regional_domain_name}"
       openai_api_key = var.openai_api_key
+      cohere_api_key = var.cohere_api_key
     }
   )
 }
