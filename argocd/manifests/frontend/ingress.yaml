@@ -10,7 +10,7 @@ spec:
     - host: eve-project.com
       http:
         paths:
-          - path: /app(.*)
+          - path: /app(.*?)
             pathType: Prefix
             backend:
               service:
