@@ -7,14 +7,17 @@ controller:
     proxy-body-size: "0"
   service:
     type: NodePort
-  # metrics:
-  #   enabled: true
-  #   serviceMonitor:
-  #     enabled: true
-  #     additionalLabels:
-  #       release: "kube-prometheus-stack"
-  #     namespaceSelector:
-  #       any: true
+    externalTrafficPolicy: Cluster
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: "kube-prometheus-stack"
+      namespaceSelector:
+        any: true
+  extraArgs:
+    enable-ssl-passthrough: true
 #
 # controller:
 #   ingressClassResource:
