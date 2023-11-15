@@ -30,9 +30,9 @@ resource "random_password" "rds" {
 
 locals {
   rds_login = {
+    db_name  = "eve"
     password = random_password.rds.result
     username = "postgres"
-    db_name  = "metaflow"
     port     = 5432
   }
 }
