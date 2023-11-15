@@ -1,8 +1,11 @@
+langserve[all]
 langchain
-langserve
-chromadb
 fastapi
 openai
+# pinecone-client
+cohere
 tiktoken
 pypdf
 boto3
+chromadb
+beautifulsoup4
