@@ -130,7 +130,7 @@ module "eks_blueprints_addons" {
     set = [{ name = "configs.params.server\\.insecure", value = "true" }]
   }
 
-  enable_aws_efs_csi_driver    = true
+  enable_aws_efs_csi_driver = true
   # enable_external_secrets      = true
   enable_metrics_server        = true
   enable_kube_prometheus_stack = true
@@ -255,10 +255,11 @@ module "secrets-manager" {
   secrets = merge(
     local.rds_login,
     {
-      db_name       = local.rds_login.db_name
-      host          = module.rds.address
-      db_uri        = "postgresql://${local.rds_login.username}:${local.rds_login.password}@${module.rds.address}:${local.rds_login.port}/${local.rds_login.db_name}"
-      s3_bucket_uri = "s3://${module.s3.bucket_regional_domain_name}"
+      db_name        = local.rds_login.db_name
+      host           = module.rds.address
+      db_uri         = "postgresql://${local.rds_login.username}:${local.rds_login.password}@${module.rds.address}:${local.rds_login.port}/${local.rds_login.db_name}"
+      s3_bucket_uri  = "s3://${module.s3.bucket_regional_domain_name}"
+      openai_api_key = var.openai_api_key
     }
   )
 }

@@ -9,3 +9,9 @@ variable "profile" {
   type        = string
   default     = "personal"
 }
+
+variable "openai_api_key" {
+  description = "OpenAI API KEY"
+  type        = string
+  sensitive   = true
+}

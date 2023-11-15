@@ -6,3 +6,4 @@ dev.ipynb
 *.db
 .terraform
 images
+*.tfvars
