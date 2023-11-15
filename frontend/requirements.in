@@ -1,6 +1,7 @@
+langserve[client]
+fastapi
 streamlit
 scikit-image
-
 boto3
 sqlalchemy
 sqlalchemy_utils
