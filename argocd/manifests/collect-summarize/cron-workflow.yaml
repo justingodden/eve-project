@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: collect-summarize-cron
+spec:
+  schedule: "0 23 * * *"
+  concurrencyPolicy: "Replace"
+  workflowSpec:
+    entrypoint: workflow
+    templates:
+      - name: workflow
+        dag:
+          tasks:
+            - name: collect
+              template: data-collector
+            - name: summarize
+              template: summarizer
+              dependencies: [collect]
+      - name: data-collector
+        container:
+          image: 005165627580.dkr.ecr.eu-west-1.amazonaws.com/eve-project/data-collector:latest
+      - name: summarizer
+        container:
+          image: 005165627580.dkr.ecr.eu-west-1.amazonaws.com/eve-project/summarizer:latest
