@@ -4,13 +4,14 @@ controller:
   service:
     type: LoadBalancer
     externalTrafficPolicy: Cluster
-    targetPorts:
-      https: 80
+    # targetPorts:
+    #   https: 80
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-name: eve-project-nlb
       service.beta.kubernetes.io/aws-load-balancer-type: external
       service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
-      service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: http
-      service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /healthz
-      service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: 10254
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+      # service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: http
+      # service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /healthz
+      # service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: 10254
