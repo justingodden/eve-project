@@ -35,10 +35,10 @@ def main() -> None:
                 # uploader.save_image(image_data, article.image_filename)
 
                 db.add_to_db(article)
-            print(f"{i+1}/{len(article_urls)} articles scraped...", end="\r")
+            print(f"{i+1}/{len(article_urls)} articles scraped...")
 
         except Exception as e:
-            print(e)
+            print(f"Error: {e} | Article: {url}")
 
 
 if __name__ == "__main__":

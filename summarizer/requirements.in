@@ -1,8 +1,9 @@
-pinecone-client
+# pinecone-client
 langchain
 openai
-tiktoken
+# tiktoken
 SQLAlchemy
 sqlalchemy_utils
 psycopg2-binary
-python-dotenv
+boto3
+# python-dotenv

@@ -89,7 +89,7 @@ class Database:
             session.flush()
 
 
-def get_db_uri() -> dict:
+def get_db_uri() -> str:
     session = boto3.Session()
     client = session.client("secretsmanager", region_name="eu-west-1")
     secret_string = client.get_secret_value(

@@ -1,16 +1,26 @@
-# from langchain.llms import OpenAI
+import json
+
+import boto3
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.schema import StrOutputParser
-import tiktoken
-from dotenv import load_dotenv
 
 import prompts
 
-load_dotenv("./../.env")  # OPENAI_API_KEY
-model = ChatOpenAI(model_name="gpt-4", temperature=0)
-# model = ChatOpenAI(model_name="gpt-4-1106-preview")
-tokenizer = tiktoken.get_encoding("cl100k_base")
+
+def _get_openai_api_key() -> str:
+    session = boto3.Session()
+    client = session.client("secretsmanager", region_name="eu-west-1")
+    secret_string = client.get_secret_value(
+        SecretId="eve-project-a9562e1a1783b0e4"
+    ).get("SecretString")
+    secret = json.loads(secret_string)
+    return secret["openai_api_key"]
+
+
+model = ChatOpenAI(
+    model_name="gpt-4", temperature=0, openai_api_key=_get_openai_api_key()
+)
 
 
 def translate(text: str) -> str:
@@ -29,19 +39,3 @@ def summarize(text: str) -> str:
     summary_chain = summary_prompt | model | StrOutputParser()
     summary = summary_chain.invoke({"text": text})
     return summary
-
-
-def tiktoken_len(text: str) -> int:
-    tokens = tokenizer.encode(text, disallowed_special=())
-    return len(tokens)
-
-
-def tiktoken_cost(docs):
-    token_counts = [tiktoken_len(doc.page_content) for doc in docs]
-    print(
-        f"""Sum: {sum(token_counts)}
-Min: {min(token_counts)}
-Avg: {int(sum(token_counts) / len(token_counts))}
-Max: {max(token_counts)}
-Cost: ${sum(token_counts) * 0.0001 / 1000}"""
-    )
