@@ -23,13 +23,3 @@ spec:
                 name: "ingress-nginx-controller"
                 port:
                   name: http
-    - host: "*.eve-project.com"
-      http:
-        paths:
-          - path: "/"
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: "ingress-nginx-controller"
-                port:
-                  name: http
