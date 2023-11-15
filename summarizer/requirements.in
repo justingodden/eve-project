@@ -4,4 +4,5 @@ openai
 tiktoken
 SQLAlchemy
 sqlalchemy_utils
+psycopg2-binary
 python-dotenv

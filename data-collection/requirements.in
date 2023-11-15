@@ -3,3 +3,4 @@ requests
 boto3
 sqlalchemy
 sqlalchemy_utils
+psycopg2-binary
