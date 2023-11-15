@@ -1,0 +1,23 @@
+server:
+  extraArgs: ["--auth-mode=server"]
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - argo.eve-project.com
+
+workflow:
+  serviceAccount:
+    create: true
+
+# controller:
+#   workflowNamespaces:
+#     - default
+
+artifactRepository:
+  s3:
+    bucket: eve-project-2de413a419ed1b48-cc23cc37cdcf9132
+    keyFormat: "argo-artifacts/{{workflow.creationTimestamp.Y}}/{{workflow.creationTimestamp.m}}/{{workflow.creationTimestamp.d}}/{{workflow.name}}/{{pod.name}}"
+    useSDKCreds: true
+    insecure: false
