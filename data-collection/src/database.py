@@ -58,6 +58,21 @@ class Database:
             session.add(article)
             session.commit()
 
+    def get_articles(self, offset=None, limit=None) -> List[Article] | None:
+        with self._session_maker() as session:
+            articles = (
+                session.query(Article)
+                .order_by(Article.published_time.desc())
+                .offset(offset)
+                .limit(limit)
+                .all()
+            )
+            return articles
+
+    def get_num_articles(self) -> int:
+        with self._session_maker() as session:
+            return session.query(Article).count()
+
     def article_exists(self, article_url: str) -> bool:
         with self._session_maker() as session:
             statement = Select(Article).where(Article.article_url == article_url)
