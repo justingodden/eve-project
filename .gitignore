@@ -7,3 +7,6 @@ dev.ipynb
 .terraform
 images
 *.tfvars
+rtdocs
+db
+*.tar.xz
