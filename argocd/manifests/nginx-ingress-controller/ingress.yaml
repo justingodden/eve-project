@@ -13,8 +13,7 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
   rules:
-    - host: eve-project.com
-      http:
+    - http:
         paths:
           - path: "/"
             pathType: Prefix
