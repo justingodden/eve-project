@@ -109,7 +109,6 @@ module "eks" {
   tags = local.tags
 }
 
-
 ################################################################################
 # EKS Blueprints Addons
 ################################################################################
@@ -130,7 +129,11 @@ module "eks_blueprints_addons" {
 
   enable_argocd = true
   argocd = {
-    set = [{ name = "configs.params.server\\.insecure", value = "true" }]
+    set = [
+      { name = "configs.params.server\\.insecure", value = "true" },
+      { name = "server.ingress.enabled", value = "true" },
+      { name = "server.ingress.hosts[0]", value = "argocd.eve-project.com" }
+    ]
   }
 
   enable_aws_efs_csi_driver    = true
@@ -144,6 +147,9 @@ module "eks_blueprints_addons" {
   tags = local.tags
 }
 
+################################################################################
+# ArgoCD App of Apps Pattern
+################################################################################
 resource "kubectl_manifest" "argocd_app_of_apps" {
   yaml_body  = <<YAML
 apiVersion: argoproj.io/v1alpha1
@@ -151,6 +157,8 @@ kind: Application
 metadata:
   name: app-of-apps
   namespace: argocd
+  labels:
+    managedBy: terraform
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -166,6 +174,45 @@ spec:
     automated:
       prune: true
       selfHeal: true
+YAML
+  depends_on = [module.eks_blueprints_addons]
+}
+
+################################################################################
+# ArgoCD Nginx Ingress Controller - Terraform controls the Load Balancer indirectly
+################################################################################
+resource "kubectl_manifest" "argocd_nginx_ingress_controller" {
+  yaml_body  = <<YAML
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+  labels:
+    managedBy: terraform
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://kubernetes.github.io/ingress-nginx
+      chart: ingress-nginx
+      targetRevision: "*"
+      helm:
+        releaseName: ingress-nginx
+        valueFiles:
+          - $values/argocd/manifests/nginx-ingress-controller/values.yaml
+    - repoURL: https://github.com/justingodden/eve-project.git
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: ingress-nginx
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
 YAML
   depends_on = [module.eks_blueprints_addons]
 }
