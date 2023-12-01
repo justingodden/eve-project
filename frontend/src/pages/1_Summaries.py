@@ -16,13 +16,11 @@ def get_db():
     return db
 
 
-@st.cache_data
 def get_num_articles():
     db = get_db()
     return db.get_num_articles()
 
 
-@st.cache_resource
 def get_articles(limit: int | None = None, offset: int | None = None):
     db = get_db()
     return db.get_articles(limit=limit, offset=offset)
