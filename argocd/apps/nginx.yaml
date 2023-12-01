@@ -16,6 +16,10 @@ spec:
       parameters:
         - name: "service.type"
           value: "ClusterIP"
+        - name: "ingress.enabled"
+          value: "true"
+        - name: "ingress.hostname"
+          value: "eve-project.com"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: nginx
