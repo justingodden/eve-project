@@ -13,6 +13,9 @@ spec:
     targetRevision: "*"
     helm:
       releaseName: nginx
+      parameters:
+        - name: "service.type"
+          value: "ClusterIP"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: nginx
