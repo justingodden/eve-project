@@ -1,27 +1,27 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: "alb-nginx-ingress-controller"
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/load-balancer-name: eve-project-alb
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:eu-west-1:005165627580:certificate/ffb02685-81f6-4753-9113-8bea4161036e"
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
-    alb.ingress.kubernetes.io/healthcheck-path: /healthz
-    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: instance
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: "alb-nginx-ingress-controller"
+#   annotations:
+#     kubernetes.io/ingress.class: alb
+#     alb.ingress.kubernetes.io/load-balancer-name: eve-project-alb
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
+#     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:eu-west-1:005165627580:certificate/ffb02685-81f6-4753-9113-8bea4161036e"
+#     alb.ingress.kubernetes.io/ssl-redirect: "443"
+#     alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+#     alb.ingress.kubernetes.io/healthcheck-path: /healthz
+#     alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: instance
 
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: "ingress-nginx-controller"
-                port:
-                  name: http
+# spec:
+#   rules:
+#     - http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: "ingress-nginx-controller"
+#                 port:
+#                   name: http

@@ -1,38 +1,44 @@
-controller:
-  ingressClassResource:
-    default: true
-  config:
-    compute-full-forwarded-for: "true"
-    use-forwarded-headers: "true"
-    proxy-body-size: "0"
-  service:
-    type: NodePort
-    externalTrafficPolicy: Cluster
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-      additionalLabels:
-        release: "kube-prometheus-stack"
-      namespaceSelector:
-        any: true
-  extraArgs:
-    enable-ssl-passthrough: true
-#
 # controller:
-#   config:
-#     use-forwarded-headers: "true"
-#     proxy-body-size: "0"
 #   ingressClassResource:
 #     default: true
-#     targetPorts:
-#       https: 80
-#     annotations:
-#       service.beta.kubernetes.io/aws-load-balancer-name: eve-project-nlb
-#       service.beta.kubernetes.io/aws-load-balancer-type: external
-#       service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-#       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
-#       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
-#       # service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: http
-#       # service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /healthz
-#       # service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: 10254
+#   config:
+#     compute-full-forwarded-for: "true"
+#     use-forwarded-headers: "true"
+#     proxy-body-size: "0"
+#   service:
+#     type: NodePort
+#     externalTrafficPolicy: Cluster
+#   metrics:
+#     enabled: true
+#     serviceMonitor:
+#       enabled: true
+#       additionalLabels:
+#         release: "kube-prometheus-stack"
+#       namespaceSelector:
+#         any: true
+#   extraArgs:
+# enable-ssl-passthrough: true
+
+controller:
+  config:
+    use-forwarded-headers: "true"
+    proxy-body-size: "0"
+  ingressClassResource:
+    default: true
+  service:
+    type: NodePort
+    externalTrafficPolicy: Local
+    targetPorts:
+      https: 80
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-name: eve-project-nlb
+      service.beta.kubernetes.io/aws-load-balancer-type: external
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:eu-west-1:005165627580:certificate/ffb02685-81f6-4753-9113-8bea4161036e"
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+      service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+      # service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: http
+      # service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /healthz
+      # service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: 10254
