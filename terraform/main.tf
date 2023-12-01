@@ -151,7 +151,7 @@ module "eks_blueprints_addons" {
 # ArgoCD App of Apps Pattern
 ################################################################################
 resource "kubectl_manifest" "argocd_app_of_apps" {
-  yaml_body  = <<YAML
+  yaml_body = <<YAML
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -175,7 +175,11 @@ spec:
       prune: true
       selfHeal: true
 YAML
-  depends_on = [module.eks_blueprints_addons]
+  depends_on = [
+    module.vpc,
+    module.eks,
+    module.eks_blueprints_addons
+  ]
 }
 
 ################################################################################
@@ -214,7 +218,13 @@ spec:
       selfHeal: true
       prune: true
 YAML
+  depends_on = [time_sleep.wait_30_seconds]
+}
+
+resource "time_sleep" "wait_30_seconds" {
   depends_on = [module.eks_blueprints_addons]
+
+  destroy_duration = "30s"
 }
 
 ################################################################################
