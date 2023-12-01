@@ -81,6 +81,9 @@ module "eks" {
 
   # EKS Addons
   cluster_addons = {
+    aws-ebs-csi-driver = {
+      most_recent = true
+    }
     coredns = {
       most_recent = true
     }
@@ -130,13 +133,41 @@ module "eks_blueprints_addons" {
     set = [{ name = "configs.params.server\\.insecure", value = "true" }]
   }
 
-  enable_aws_efs_csi_driver = true
-  # enable_external_secrets      = true
+  enable_aws_efs_csi_driver    = true
+  enable_karpenter             = false
+  enable_cluster_autoscaler    = false
   enable_metrics_server        = true
   enable_kube_prometheus_stack = true
-  # enable_argo_workflows        = true
+  enable_argo_workflows        = false
+  enable_external_secrets      = false
 
   tags = local.tags
+}
+
+resource "kubectl_manifest" "argocd_app_of_apps" {
+  yaml_body  = <<YAML
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/justingodden/eve-project.git
+    targetRevision: HEAD
+    path: argocd/apps
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+YAML
+  depends_on = [module.eks_blueprints_addons]
 }
 
 ################################################################################

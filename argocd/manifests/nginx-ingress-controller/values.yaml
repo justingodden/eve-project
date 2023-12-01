@@ -20,11 +20,11 @@ controller:
     enable-ssl-passthrough: true
 #
 # controller:
+#   config:
+#     use-forwarded-headers: "true"
+#     proxy-body-size: "0"
 #   ingressClassResource:
 #     default: true
-#   service:
-#     type: LoadBalancer
-#     externalTrafficPolicy: Cluster
 #     targetPorts:
 #       https: 80
 #     annotations:

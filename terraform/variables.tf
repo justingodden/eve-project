@@ -7,7 +7,7 @@ variable "region" {
 variable "profile" {
   description = "AWS credentials profile"
   type        = string
-  default     = "personal"
+  default     = "default"
 }
 
 variable "openai_api_key" {
