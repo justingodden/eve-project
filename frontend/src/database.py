@@ -106,9 +106,15 @@ class Database:
 
 def get_db_uri() -> str:
     session = boto3.Session()
-    client = session.client("secretsmanager", region_name="eu-west-1")
-    secret_string = client.get_secret_value(
-        SecretId="eve-project-a9562e1a1783b0e4"
-    ).get("SecretString")
+    ssm = session.client("ssm", region_name="eu-west-1")
+    secret_name = (
+        ssm.get_parameter(Name="/eve-project/secret-name")
+        .get("Parameter", {})
+        .get("Value")
+    )
+    secretsmanager = session.client("secretsmanager", region_name="eu-west-1")
+    secret_string = secretsmanager.get_secret_value(SecretId=secret_name).get(
+        "SecretString"
+    )
     secret = json.loads(secret_string)
     return secret["db_uri"]

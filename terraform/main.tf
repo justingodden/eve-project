@@ -129,14 +129,17 @@ module "eks_blueprints_addons" {
 
   enable_argocd = true
   argocd = {
+    chart_version = "5.51.5"
     set = [
       { name = "configs.params.server\\.insecure", value = "true" },
       { name = "server.ingress.enabled", value = "true" },
-      { name = "server.ingress.hosts[0]", value = "argocd.eve-project.com" }
+      { name = "server.ingress.hosts[0]", value = "argocd.eve-project.com" },
+      { name = "server.ingress.pathType", value = "ImplementationSpecific" },
+      { name = "server.ingress.ingressClassName", value = "nginx" }
     ]
   }
 
-  enable_aws_efs_csi_driver    = true
+  enable_aws_efs_csi_driver    = false
   enable_karpenter             = false
   enable_cluster_autoscaler    = false
   enable_metrics_server        = true
@@ -258,7 +261,18 @@ data "aws_iam_policy_document" "eks" {
       "secretsmanager:GetSecretValue",
     ]
 
-    resources = [module.secrets-manager.arn]
+    resources = [module.secrets-manager.secretsmanager_arn]
+  }
+
+  statement {
+    sid    = "SsmParameterStore"
+    effect = "Allow"
+
+    actions = [
+      "ssm:GetParameter",
+    ]
+
+    resources = [module.secrets-manager.ssm_parameter_arn]
   }
 }
 
@@ -338,8 +352,9 @@ module "s3" {
 # SecretsManager
 ################################################################################
 module "secrets-manager" {
-  source = "./modules/secrets-manager"
-  name   = "${local.name}-${random_id.secrets_manager.hex}"
+  source     = "./modules/secrets-manager"
+  name       = local.name
+  add_suffix = true
   secrets = merge(
     local.rds_login,
     {
