@@ -20,7 +20,7 @@ spec:
           enabled: true
           hostname: eve-project.com
           path: /nginx(/|$)(.*)
-          pathType: Prefix
+          pathType: Exact
           annotations:
             ingress.kubernetes.io/rewrite-target: /$2
   destination:
